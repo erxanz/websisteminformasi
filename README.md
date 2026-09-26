@@ -16,8 +16,6 @@ app/
 config/            app.php, database.php
 routes/            web.php
 migrations/        migration SQL untuk database yang sudah berjalan
-KODE_MYSQL.md      semua kode MySQL siap copy-paste ke tab SQL phpMyAdmin
-PANDUAN_DEPLOY.md  panduan deployment langkah demi langkah (InfinityFree)
 public/            index.php (front controller), .htaccess
 storage/logs/      app.log (dibuat otomatis saat ada error)
 storage/uploads/profiles/  foto profil (tidak dapat diakses langsung)
