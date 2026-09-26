@@ -5,17 +5,19 @@ folder yang mudah dikembangkan.
 
 ## Struktur
 
-```
+```bash
 app/
-├── Controllers/   HomeController, AuthController, DashboardController
-├── Models/        Mahasiswa, ProgramStudi, Fakultas (+ Model dasar)
-├── Views/         layouts/, home/, auth/, dashboard/, errors/
+├── Controllers/   HomeController, AuthController, DashboardController,
+│                  ProfileController, ProgramStudiController, MediaController
+├── Models/        Mahasiswa, ProgramStudi, Fakultas, LoginAttempt (+ Model dasar)
+├── Views/         layouts/, partials/, home/, prodi/, profil/, auth/, dashboard/, errors/
 ├── Core/          Database, Router, Controller, Model, View, Auth, Session, Validator, Paginator, ImageUploader, Env
 └── Helpers/       functions.php
 config/            app.php, database.php
 routes/            web.php
 migrations/        migration SQL untuk database yang sudah berjalan
-KODE_MYSQL.txt     semua kode MySQL siap copy-paste ke tab SQL phpMyAdmin
+KODE_MYSQL.md      semua kode MySQL siap copy-paste ke tab SQL phpMyAdmin
+PANDUAN_DEPLOY.md  panduan deployment langkah demi langkah (InfinityFree)
 public/            index.php (front controller), .htaccess
 storage/logs/      app.log (dibuat otomatis saat ada error)
 storage/uploads/profiles/  foto profil (tidak dapat diakses langsung)
@@ -49,21 +51,6 @@ php -S 127.0.0.1:8000 -t public public/index.php
 
 Buka `http://127.0.0.1:8000`.
 
-## Deployment (InfinityFree / shared hosting)
-
-1. Upload seluruh isi project ke `htdocs` (termasuk `.htaccess` dan file `app/`).
-2. Import `if0_42928294_universitas.sql` melalui phpMyAdmin.
-3. Pastikan `.env` berisi host, user, password, dan nama database yang benar.
-4. Pastikan `mod_rewrite` aktif — `.htaccess` di root meneruskan semua request
-   ke `public/index.php` dan memblokir akses langsung ke `app/`, `config/`,
-   `routes/`, `storage/`, dan `.env`.
-
-## Akun contoh
-
-Semua NPM `2101010001` – `2101010005`, password: `password123`
-
-> Segera ganti password setelah login pertama.
-
 ## Profil mahasiswa & upload foto
 
 Halaman `/profil` hanya dapat diakses mahasiswa yang sudah login. NPM **tidak pernah**
@@ -71,7 +58,8 @@ ada di URL, jadi mahasiswa secara struktural tidak bisa membuka atau mengubah pr
 orang lain — data selalu diambil dari session, bukan dari parameter request.
 
 Kolom yang bisa diubah sendiri: nama, email, nomor HP, alamat, dan foto.
-NPM, program studi, dan fakultas bersifat read-only (hanya admin).
+NPM, program studi, dan fakultas bersifat read-only — tidak ada fitur untuk
+mengubahnya lewat aplikasi.
 
 ### Alur upload foto
 
@@ -131,6 +119,8 @@ Riwayat kegagalan sebuah akun dihapus setelah login berhasil. Catatan lama (>24 
 
 PHP 7.4+ dengan ekstensi PDO MySQL, fileinfo, dan mbstring.
 
-> Database yang sudah berjalan perlu menambahkan kolom profil sekali saja.
-> Buka `KODE_MYSQL.txt` -> jalankan **BAGIAN A** (aman, tidak menghapus data).
-> Untuk database baru, jalankan **BAGIAN B** pada file yang sama.
+> Database yang sudah berjalan perlu menambahkan kolom profil sekali saja:
+> jalankan `migrations/2026_09_26_add_profile_fields.sql` (atau buka
+> `KODE_MYSQL.md` -> **BAGIAN A**, aman, tidak menghapus data).
+> Untuk database baru, jalankan **BAGIAN B** pada `KODE_MYSQL.md` atau
+> import `if0_42928294_universitas.sql`.
