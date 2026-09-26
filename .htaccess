@@ -1,0 +1,23 @@
+# Semua request diteruskan ke public/index.php (front controller).
+# File aplikasi (app/, config/, migrations/, routes/, storage/, .env) tidak boleh
+# diakses langsung lewat browser.
+
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+
+    # Blokir akses langsung ke folder internal dan file sensitif
+    RewriteRule ^(app|config|migrations|routes|storage|vendor)(/|$) - [F,L]
+    RewriteRule ^\.env(\..*)?$ - [F,L]
+    RewriteRule \.(sql|txt|log|md|json|lock)$ - [F,L]
+
+    # Halaman utama
+    RewriteRule ^$ public/index.php [L]
+
+    # Semua request lain yang bukan file/folder nyata
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteRule ^(.*)$ public/index.php [L,QSA]
+</IfModule>
+
+# Matikan directory listing
+Options -Indexes
